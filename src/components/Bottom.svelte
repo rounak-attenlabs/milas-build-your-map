@@ -1,206 +1,67 @@
 <script>
 	import chevronUpSvg from "$svg/chevron-up.svg";
-	import chevronDownSvg from "$svg/chevron-down.svg";
-	import useWindowDimensions from "$runes/useWindowDimensions.svelte.js";
-	let dimensions = new useWindowDimensions();
-
-	let {
-		visible,
-		atTheEnd,
-		numBeats,
-		next,
-		prev,
-		locked = $bindable(),
-		side = $bindable(),
-		beatI = $bindable()
-	} = $props();
-
-	const showCredits = () => {
-		locked = false;
-		document.querySelector("#methods").scrollIntoView({ behavior: "smooth" });
-	};
+	let { visible, beatI, prev, atTheEnd } = $props();
 </script>
 
-<div class="bottom" class:end={atTheEnd} class:visible>
-	{#if atTheEnd}
-		<div class="counter left" class:visible={side === "mom"}>
-			{beatI}/{numBeats - 1}
-		</div>
-
-		<button class="nav" disabled={beatI === 1} onclick={prev}>
-			<span>{@html chevronUpSvg}</span>
-			Prev
-		</button>
-
-		<button class="credit-btn" onclick={showCredits}>Go to Credits</button>
-
-		<button class="nav" disabled={atTheEnd} onclick={next}>
-			<span>{@html chevronDownSvg}</span>
-			Next
-		</button>
-
-		<div class="counter right" class:visible={side === "baby"}>
-			{beatI}/{numBeats - 1}
-		</div>
-	{:else}
-		<div class="counter left" class:visible={side === "mom"}>
-			{beatI}/{numBeats - 1}
-		</div>
-
-		<span class="desktop-instructions left">Tap to navigate</span>
-
-		<button class="nav" disabled={beatI === 1} onclick={prev}>
-			<span>{@html chevronUpSvg}</span>
-			Prev
-		</button>
-
-		<span class="mobile-instructions">
-			Tap to navigate
-			{#if dimensions.width < 650}
-				<br />{beatI}/{numBeats - 1}
-			{/if}
-		</span>
-
-		<button class="nav" disabled={atTheEnd} onclick={next}>
-			<span>{@html chevronDownSvg}</span>
-			Next
-		</button>
-
-		<span class="desktop-instructions right">Or use arrow key</span>
-
-		<div class="counter right" class:visible={side === "baby"}>
-			{beatI}/{numBeats - 1}
-		</div>
-	{/if}
+<div class="bottom" class:visible>
+	<button class="nav" disabled={beatI <= 1} onclick={prev}>
+		<span>{@html chevronUpSvg}</span>
+		Back
+	</button>
+	<span class="counter">{atTheEnd ? "Your map" : `Stop ${beatI}`}</span>
+	<span class="hint">{atTheEnd ? "" : "Tap an answer to continue"}</span>
 </div>
 
 <style>
 	.bottom {
 		display: none;
 		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
+		gap: 1rem;
 		height: 4rem;
-		background: rgba(0, 0, 0, 0.75);
-		backdrop-filter: blur(2px);
-		border-top: 1px solid #4c5c8f;
+		padding: 0 1rem;
 		position: absolute;
 		bottom: 0;
-		z-index: 4;
+		z-index: 5;
 		width: 100%;
-		text-transform: uppercase;
-		text-align: center;
+		background: rgba(242, 248, 247, 0.92);
+		border-top: 1px solid rgba(13, 78, 77, 0.14);
 		font-size: var(--12px);
-		font-weight: bold;
-		padding: 0 1rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--teal-6);
 	}
-
 	.bottom.visible {
 		display: flex;
 	}
-
-	.desktop-instructions.left {
-		font-size: var(--12px);
-		text-align: right;
-	}
-
-	.desktop-instructions.right {
-		font-size: var(--12px);
-		text-align: left;
-	}
-
-	button {
-		height: 2.25rem;
-		font-size: var(--16px);
-		transition: all calc(var(--1s) * 0.3) ease;
-		border: none;
-		box-shadow: 0 2px 16px rgba(247, 227, 189, 0.5);
-	}
-
-	button:hover {
-		background: var(--ivf-mid-yellow);
-		transform: translateY(-2px);
-	}
-
-	button.nav,
-	button.restart {
+	.nav {
 		display: flex;
 		align-items: center;
-		justify-content: center;
 		gap: 4px;
-		border: none;
+		min-height: 2.5rem;
+		padding: 0 0.9rem;
+		border-radius: 999px;
+		border: 1.5px solid rgba(13, 78, 77, 0.25);
+		background: #fff;
+		color: var(--teal);
+		font-size: var(--14px);
+		font-weight: 800;
+		box-shadow: none;
+		letter-spacing: 0;
+		text-transform: none;
 	}
-
-	button.nav span {
-		height: 18px;
-		width: 18px;
+	.nav:disabled {
+		opacity: 0.4;
 	}
-
-	button.restart span {
-		height: 20px;
-		width: 20px;
-	}
-
-	button.restart.parent span {
-		height: 16px;
+	.nav span {
 		width: 16px;
+		height: 16px;
 	}
-
-	.credit-btn {
-		border: 2px solid var(--ivf-mid-purple);
-		color: var(--ivf-mid-purple);
-    	background: var(--color-bg); 
-		box-shadow: 0 2px 16px rgba(76, 92, 143, 0.5);
-		line-height: 1;
-	}
-
-	.credit-btn:hover {
-		background: var(--ivf-mid-yellow);
-		border: 2px solid var(--ivf-mid-yellow);
-		box-shadow: 0 2px 16px rgba(76, 92, 143, 0.5);
-		color: var(--color-bg); 
-	}
-
-	.mobile-instructions {
-		display: none;
-	}
-
-	.counter {
-		opacity: 0;
-		transition: opacity calc(var(--1s) * 0.5) ease-in-out;
-	}
-
-	.counter.visible {
-		opacity: 1;
-	}
-
-	.counter.left {
-		margin-right: auto;
-	}
-
-	.counter.right {
+	.hint {
 		margin-left: auto;
-	}
-
-	@media (max-width: 600px) {
-		button {
-			font-size: var(--12px);
-		}
-
-		.mobile-instructions {
-			display: flex;
-		}
-
-		.desktop-instructions {
-			display: none;
-		}
-
-		.bottom {
-			justify-content: space-between;
-		}
-
-		.counter {
-			display: none;
-		}
+		font-weight: 700;
+		letter-spacing: 0;
+		text-transform: none;
+		color: var(--muted);
 	}
 </style>

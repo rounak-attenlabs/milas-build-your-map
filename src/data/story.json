@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "title": "Build your map",
+    "description": "Two minutes to see what matters at your stage of pregnancy, who can help, and your next step. MILA’S, MAPS for parenthood.",
+    "url": "https://milas-preview-k7x2m9.netlify.app/build-your-map",
+    "keywords": "pregnancy, maternity, Bengaluru, St. Philomena’s, MILA’S, MAPS"
+  },
+  "hed": "Build your map",
+  "intro": "Two minutes. A few taps. At the end you get your map: what matters at your stage, who can help, and your next step.",
+  "landing": {
+    "question": "Where are you right now?",
+    "options": [
+      { "label": "Trying for a baby", "next": "trying", "key": "stage", "value": "trying" },
+      { "label": "Pregnant", "next": "weeks", "key": "stage", "value": "pregnant" },
+      { "label": "Baby is here", "next": "feeding", "key": "stage", "value": "baby" }
+    ]
+  },
+  "beats": {
+    "weeks": {
+      "text": ["Lovely. Roughly how far along are you? A guess is fine."],
+      "options": [
+        { "label": "Under 12 weeks", "next": "doctor", "key": "weeks", "value": "early" },
+        { "label": "12 to 27 weeks", "next": "doctor", "key": "weeks", "value": "middle" },
+        { "label": "28 weeks or more", "next": "doctor", "key": "weeks", "value": "late" }
+      ],
+      "description": "She walks from home onto the road."
+    },
+    "trying": {
+      "text": [
+        "Good place to start. Most of what shapes a first pregnancy is decided in the first few weeks, often before anyone has told the family.",
+        "Let’s see who is around you."
+      ],
+      "options": [{ "label": "Continue", "next": "doctor" }],
+      "description": "She walks a little way along the road."
+    },
+    "feeding": {
+      "text": ["Congratulations. How old is your baby?"],
+      "options": [
+        { "label": "Under six weeks", "next": "family", "key": "babyAge", "value": "newborn" },
+        { "label": "Six weeks to six months", "next": "family", "key": "babyAge", "value": "infant" },
+        { "label": "Older", "next": "family", "key": "babyAge", "value": "older" }
+      ],
+      "description": "She walks carrying the baby."
+    },
+    "doctor": {
+      "text": ["Do you have a doctor you see regularly?"],
+      "options": [
+        { "label": "Yes", "next": "hospital", "key": "doctor", "value": "yes" },
+        { "label": "Not yet", "next": "hospital", "key": "doctor", "value": "no" }
+      ],
+      "description": "A clinic appears beside the road with a pin above it."
+    },
+    "hospital": {
+      "text": [
+        "<strong>Your doctor makes every medical decision.</strong> MILA’S helps with everything around it, from costs to what to ask at the next visit.",
+        "Where will the baby arrive?"
+      ],
+      "options": [
+        { "label": "St. Philomena’s", "next": "room", "key": "hospital", "value": "stp" },
+        { "label": "Another hospital", "next": "room", "key": "hospital", "value": "other" },
+        { "label": "Not decided", "next": "room", "key": "hospital", "value": "undecided" }
+      ],
+      "description": "A hospital rises further down the road."
+    },
+    "room": {
+      "text": [
+        "Good to know: a full delivery package at St. Philomena’s J Ward is <strong>₹1,56,000 all in</strong>. Stay beyond the standard package is charged at room rates, shown before admission.",
+        "Which room would you pick?"
+      ],
+      "options": [
+        { "label": "General ward", "next": "insurance", "key": "room", "value": "general" },
+        { "label": "Single AC room", "next": "insurance", "key": "room", "value": "single" },
+        { "label": "Deluxe room", "next": "insurance", "key": "room", "value": "deluxe" }
+      ],
+      "description": "A price tag appears beside the hospital."
+    },
+    "insurance": {
+      "text": [
+        "Most people are not sure about this one. If a room costs more than your policy’s <strong>room rent limit</strong>, the insurer can pay less on the rest of the bill too, not just the room.",
+        "Does your insurance cover the delivery?"
+      ],
+      "options": [
+        { "label": "Yes", "next": "family", "key": "insurance", "value": "yes" },
+        { "label": "No", "next": "family", "key": "insurance", "value": "no" },
+        { "label": "I’m not sure", "next": "family", "key": "insurance", "value": "unsure" }
+      ],
+      "description": "A policy card appears on the road."
+    },
+    "family": {
+      "text": ["Who is travelling with you?"],
+      "options": [
+        { "label": "My partner", "next": "end", "key": "family", "value": "partner" },
+        { "label": "My mother or mother-in-law", "next": "end", "key": "family", "value": "mother" },
+        { "label": "Partner and family", "next": "end", "key": "family", "value": "both" },
+        { "label": "Just me", "next": "end", "key": "family", "value": "solo" }
+      ],
+      "description": "Family faces appear beside her."
+    },
+    "end": {
+      "text": [],
+      "options": [],
+      "description": "She reaches the end of the road and the needle settles."
+    }
+  },
+  "ending": {
+    "title": "This is your map.",
+    "sub": "Three stops that matter now",
+    "consent": "I’m happy for MILA’S to message me about my map. My answers are used only for this.",
+    "button": "Send me my map on WhatsApp",
+    "after": "Your map is on its way. Someone from the team will reply during working hours. A message is not a booking until the team confirms one with you."
+  },
+  "credit": "Built on The Pudding’s open-source story engine (MIT). Illustrations are placeholders."
+}

@@ -6,11 +6,19 @@
 /* colors defined in variables.css */
 :root {
 	/* font */
-	--sans:
-		"Atlas Grotesk", -apple-system, BlinkMacSystemFont, Helvetica, Arial,
-		sans-serif;
-	--serif:
-		"Canela", "Tiempos Text", Iowan Old Style, Times New Roman, Times, serif;
+	--sans: "Nunito", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+	--serif: "Playfair Display", Georgia, "Times New Roman", serif;
+
+	/* MILA'S tokens (same values as the main site) */
+	--deep: #052322;
+	--teal: #0d4e4d;
+	--teal-6: #2f7f7c;
+	--teal-3: #9fc6c3;
+	--teal-1: #e1eeed;
+	--paper: #f2f8f7;
+	--coral: #dd725a;
+	--ink: #102e2d;
+	--muted: #4a6564;
 	--mono: Menlo, Consolas, Monaco, monospace;
 
 	/* z-index */
@@ -23,24 +31,24 @@
 	--border-radius: 2px;
 	--font-body: var(--sans);
 	--font-form: var(--sans);
-	--color-fg: #f9f4ff;
-	--color-bg: var(--color-black);
-	--color-primary: var(--color-black);
-	--color-link: #d1c3e3;
-	--color-link-dark: var(--ivf-dark-purple);
+	--color-fg: var(--ink);
+	--color-bg: var(--paper);
+	--color-primary: var(--teal);
+	--color-link: var(--teal);
+	--color-link-dark: var(--teal);
 	--color-link-hover: var(--color-fg);
-	--color-focus: var(--color-red);
+	--color-focus: var(--coral);
 	--color-mark: var(--color-yellow);
 	--color-selection: var(--color-gray-300);
 	--color-border: var(--color-gray-300);
-	--color-button-bg: #f7e3bd;
+	--color-button-bg: var(--coral);
 	--color-button-fg: var(--color-bg);
 	--color-button-hover: var(--color-gray-400);
 	--color-input-bg: var(--color-gray-50);
 	--color-input-fg: var(--color-gray-900);
 	--color-placeholder: var(--color-gray-500);
 
-	--header-height: 5rem;
+	--header-height: 4rem;
 
 	/* "1" second duration */
 	--1s: 1ms;

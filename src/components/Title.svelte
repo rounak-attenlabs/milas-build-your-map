@@ -1,238 +1,129 @@
 <script>
 	import { projectState } from "$runes/misc.svelte.js";
 	import { onMount } from "svelte";
-	import copy from "$data/copy.json";
-	import parentSvg from "$svg/parent-preview.svg";
-	import babySvg from "$svg/baby-preview.svg";
+	import story from "$data/story.json";
 
-	let {
-		side = $bindable(),
-		beatI = $bindable(),
-		titleHeight = $bindable()
-	} = $props();
-
+	let { start, titleHeight = $bindable() } = $props();
 	let visible = $state(false);
 
-	const start = (id) => {
-		projectState.started = true;
-		side = id;
-		beatI = 1;
+	const go = (option) => {
 		visible = false;
-
-		const links = document.querySelectorAll(".bylines a");
-		links.forEach((link) => {
-			link.setAttribute("tabindex", "-1");
-		});
+		start(option);
 	};
 
-	onMount(() => {
-		visible = true;
-	});
+	onMount(() => (visible = true));
 </script>
 
-<div id="title" class:visible bind:clientHeight={titleHeight}>
-	<h1>{copy.hed}</h1>
+<div id="title" class:visible class:hidden={projectState.started} bind:clientHeight={titleHeight}>
+	<p class="eyebrow">MILA’S · MAPS for parenthood</p>
+	<h1>{story.hed}</h1>
+	<p class="intro">{story.intro}</p>
 
-	<div class="bylines" class:visible>
-		<div class="byline">{@html copy.byline}</div>
-		<div class="byline">{@html copy.byline2}</div>
-		<div class="byline">{@html copy.byline3}</div>
-	</div>
-
-	<div class="instructions" class:visible>
-		<div class="text">{@html copy.landing.text}</div>
-
+	<div class="card" class:visible>
+		<p class="question">{story.landing.question}</p>
 		<div class="buttons">
-			<button
-				class="parent"
-				onclick={() => start("mom")}
-				tabindex={projectState.started ? -1 : 0}
-			>
-				<span>{@html parentSvg}</span>
-				Parent</button
-			>
-			<span>and</span>
-			<button
-				class="baby"
-				onclick={() => start("baby")}
-				tabindex={projectState.started ? -1 : 0}
-			>
-				Child
-				<span>{@html babySvg}</span>
-			</button>
+			{#each story.landing.options as option}
+				<button onclick={() => go(option)} tabindex={projectState.started ? -1 : 0}>{option.label}</button>
+			{/each}
 		</div>
-
-		<div class="select">Select one to continue</div>
+		<p class="hint">About two minutes. Nothing is saved until you choose to send your map.</p>
 	</div>
 </div>
 
 <style>
 	#title {
-		margin-top: var(--header-height);
+		position: absolute;
+		inset: 0;
+		z-index: var(--z-top);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		position: relative;
-		z-index: var(--z-top);
-		padding: 0 1rem;
-		pointer-events: none;
+		justify-content: center;
+		gap: 1rem;
+		padding: calc(var(--header-height) + 1rem) 1.25rem 2rem;
+		text-align: center;
+		background: linear-gradient(180deg, rgba(242, 248, 247, 0.96), rgba(242, 248, 247, 0.9));
 		opacity: 0;
-		transition: opacity calc(var(--1s) * 0.5) ease-in-out;
+		pointer-events: none;
+		transition: opacity calc(var(--1s) * 0.6) ease-in-out;
 	}
-
 	#title.visible {
-		pointer-events: all;
 		opacity: 1;
+		pointer-events: all;
 	}
-
+	#title.hidden {
+		opacity: 0;
+		pointer-events: none;
+	}
+	.eyebrow {
+		font-size: var(--12px);
+		font-weight: 800;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--teal-6);
+	}
 	h1 {
 		font-family: var(--serif);
-		padding: 2rem 0;
-		text-align: center;
-		font-size: var(--80px);
-		max-width: 800px;
-		max-width: 600px;
-		line-height: 1.1;
+		font-weight: 500;
+		font-size: var(--56px);
+		line-height: 1.05;
+		color: var(--teal);
+		max-width: 12ch;
 	}
-
-	.bylines {
+	.intro {
+		max-width: 34ch;
+		color: var(--muted);
+		font-size: var(--18px);
+		line-height: 1.5;
+	}
+	.card {
+		width: min(100%, 420px);
+		margin-top: 1rem;
+		padding: 1.25rem;
+		border-radius: 18px;
+		background: #fff;
+		box-shadow: 0 24px 48px -28px rgba(5, 35, 34, 0.45);
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		opacity: 0;
-		transition: opacity calc(var(--1s) * 0.5) calc(var(--1s) * 0.5) ease-in-out;
+		gap: 0.75rem;
 	}
-
-	.bylines.visible {
-		opacity: 1;
+	.question {
+		font-family: var(--serif);
+		font-size: var(--24px);
+		color: var(--teal);
 	}
-
-	.byline:nth-of-type(1) {
-		font-size: var(--18px);
-	}
-
-	.byline:nth-of-type(2) {
-		font-size: var(--14px);
-		margin-top: 0.5rem;
-	}
-
-	.byline:nth-of-type(3) {
-		font-size: var(--14px);
-		margin-top: 0.25rem;
-	}
-
-	.instructions {
-		font-size: var(--18px);
-		background: rgba(249, 244, 255, 0.95);
-		color: var(--color-bg);
-		border-radius: 8px;
-		font-weight: 300;
-		position: absolute;
-		top: calc(100% + 3rem);
-		max-width: 480px;
-		text-align: center;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1.5rem;
-		margin: 0 1rem;
-		padding: 1.5rem;
-		opacity: 0;
-		backdrop-filter: blur(4px);
-		box-shadow: 0 2px 16px rgba(249, 244, 255, 0.5);
-		transition: opacity calc(var(--1s) * 0.5) var(--1s) ease-in-out;
-	}
-
-	.instructions.visible {
-		opacity: 1;
-	}
-
-	/* :global(.instructions strong) {
-		white-space: pre;
-	} */
-
 	.buttons {
-		display: flex;
-		align-items: center;
+		display: grid;
 		gap: 0.5rem;
-		font-size: var(--14px);
-		font-weight: 700;
 	}
-
 	button {
-		display: flex;
-		align-items: center;
-		gap: 4px;
-		height: 2.25rem;
-		transition: all calc(var(--1s) * 0.3) ease;
+		text-transform: none;
+		letter-spacing: 0;
+		min-height: 3rem;
+		border-radius: 999px;
+		border: 1.5px solid rgba(13, 78, 77, 0.25);
+		background: #fff;
+		color: var(--teal);
+		font-weight: 700;
 		font-size: var(--16px);
-		box-shadow: 0 2px 16px rgba(247, 227, 189, 0.5);
+		box-shadow: none;
+		transition: background calc(var(--1s) * 0.2), border-color calc(var(--1s) * 0.2), transform calc(var(--1s) * 0.2);
 	}
-
 	button:hover {
-		background: var(--ivf-mid-yellow);
-		transform: translateY(-2px);
+		background: var(--teal-1);
+		border-color: var(--teal);
+		transform: translateY(-1px);
 	}
-
-	button span {
-		width: 20px;
-		height: 20px;
-	}
-
-	button.parent span {
-		width: 16px;
-		height: 16px;
-	}
-
-	.select {
-		text-transform: uppercase;
+	.hint {
 		font-size: var(--12px);
-		font-weight: bold;
+		color: var(--muted);
 	}
-
 	@media (max-width: 600px) {
 		h1 {
-			font-size: var(--48px);
+			font-size: var(--44px);
 		}
-
-		.byline:nth-of-type(1) {
+		.intro {
 			font-size: var(--16px);
-		}
-
-		.byline:nth-of-type(2),
-		.byline:nth-of-type(3) {
-			font-size: var(--12px);
-		}
-
-		.instructions {
-			font-size: var(--16px);
-		}
-
-		button {
-			font-size: var(--12px);
-		}
-	}
-
-	@media (max-width: 400px) {
-		h1 {
-			font-size: var(--40px);
-		}
-	}
-
-	/* When there isn't enough vertical room (e.g. browser zoomed in), the
-	   title's own layout can push .instructions below the visible area of
-	   its overflow:hidden ancestor. Anchor it to the viewport instead so
-	   the start buttons stay reachable, scrolling internally if needed. */
-	@media (max-height: 700px) {
-		.instructions {
-			position: fixed;
-			top: auto;
-			bottom: 0.5rem;
-			left: 1rem;
-			right: 1rem;
-			margin: 0 auto;
-			max-height: calc(100svh - 1rem);
-			overflow-y: auto;
 		}
 	}
 </style>

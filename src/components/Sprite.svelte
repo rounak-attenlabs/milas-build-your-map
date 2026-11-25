@@ -11,6 +11,7 @@
 		id,
 		beatId,
 		allBeats,
+		otherBeats = [],
 		steps,
 		pathEl,
 		spritePosition = $bindable(),
@@ -182,8 +183,7 @@
 		// 	});
 
 		// Reset future scenery
-		const futureSceneryActions = allBeats
-			.slice(i + 1)
+		const futureSceneryActions = [...allBeats.slice(i + 1), ...otherBeats]
 			.flatMap((beat) => beat.steps ?? [])
 			.filter((step) => step.scenery && step.sceneryAction);
 		futureSceneryActions.forEach((d) => {
@@ -257,6 +257,7 @@
 		const screenPoint = pt.matrixTransform(svg.getScreenCTM());
 
 		const parentEl = document.querySelector(`#side-${id}`);
+		if (!parentEl) return;
 		const parentRect = parentEl.getBoundingClientRect();
 
 		x = Math.round(screenPoint.x - parentRect.left);

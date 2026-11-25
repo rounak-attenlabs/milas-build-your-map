@@ -3,160 +3,67 @@
 	import Title from "$components/Title.svelte";
 	import Html from "$components/Html.svelte";
 	import World from "$components/World.svelte";
-	import DeepDive from "$components/DeepDive.svelte";
 	import Bottom from "$components/Bottom.svelte";
-	import Methods from "$components/Methods.svelte";
 	import Footer from "$components/Footer.svelte";
-	import momBeats from "$data/beats-mom.csv";
-	import copy from "$data/copy.json";
+	import story from "$data/story.json";
 	import focusTrap from "$actions/focusTrap.js";
-	import _ from "lodash";
 
-	const numBeats = Object.entries(_.groupBy(momBeats, "id")).map(
-		([id, steps]) => ({
-			id,
-			steps
-		})
-	).length;
-
-	let side = $state("mom");
+	// The route is the list of beat ids she has walked, in order. Her answers branch it.
+	let route = $state(["start"]);
 	let beatI = $state(0);
 	let direction = $state("forward");
+	let answers = $state({});
 	let titleHeight = $state(0);
 	let locked = $state(true);
-	let showBoth = $state(true);
-	let deepDiveOpen = $state(false);
-	let deepDiveContent = $state([]);
-	let description = $derived(copy.beats[side][beatI - 1]?.description);
-	let atTheEnd = $derived(showBoth && beatI === numBeats - 1);
 
-	const switchSides = () => {
-		const sideEls = document.querySelectorAll(".overlay .Overlay path");
-		sideEls.forEach((el) => {
-			el.style.transition = "fill-opacity var(--1s) ease-in-out";
-			if (showBoth || Array.from(el.classList).some((d) => d.includes(side))) {
-				el.style.fillOpacity = 0;
-			} else {
-				el.style.fillOpacity = 0.9;
-			}
-		});
+	let beatId = $derived(route[beatI]);
+	let beat = $derived(story.beats[beatId]);
+	let atTheEnd = $derived(beatId === "end");
+	let description = $derived(beat?.description);
+
+	const choose = (option) => {
+		if (option.key) answers[option.key] = option.value;
+		direction = "forward";
+		route = [...route.slice(0, beatI + 1), option.next];
+		beatI += 1;
+		document.querySelector(".main")?.scrollIntoView({ behavior: "instant", block: "end" });
 	};
 
-	const next = () => {
-		if (beatI >= numBeats - 1) return;
-		direction = "forward";
-		beatI = Math.min(numBeats - 1, beatI + 1);
-
-		document
-			.querySelector(".main")
-			.scrollIntoView({ behavior: "instant", block: "end" });
-
-		deepDiveOpen = false;
-		deepDiveContent = [];
+	const start = (option) => {
+		projectState.started = true;
+		choose(option);
 	};
 
 	const prev = () => {
-		if (beatI === 1) return;
-
-		if (beatI === numBeats - 1 || !locked) {
-			document
-				.querySelector(".main")
-				.scrollIntoView({ behavior: "instant", block: "end" });
-			locked = true;
-		}
-
+		if (beatI <= 1) return;
 		direction = "backward";
-		beatI = Math.max(0, beatI - 1);
-
-		deepDiveOpen = false;
-		deepDiveContent = [];
+		beatI -= 1;
+		locked = true;
+		document.querySelector(".main")?.scrollIntoView({ behavior: "instant", block: "end" });
 	};
 
 	const onKeyDown = (e) => {
-		if (e.key === "Escape" && deepDiveOpen) {
-            deepDiveOpen = false;
-            return;
-        }
-
 		if (!projectState.started) return;
-		if (e.key === "ArrowDown") {
-			next();
-		} else if (e.key === "ArrowUp") {
-			prev();
-		} else if (e.key === "ArrowLeft") {
-			side = "mom";
-		} else if (e.key === "ArrowRight") {
-			side = "baby";
-		}
+		if (e.key === "ArrowUp") prev();
 	};
-
-	const handleClickOutside = (e) => {
-        if (!deepDiveOpen) return;
-
-        const isTrigger = e.target.closest('.deep .close');
-        const isInsideDeepDive = e.target.closest('.deep');
-
-        if (!isInsideDeepDive && !isTrigger) {
-            deepDiveOpen = false;
-        }
-    };
-
-	$effect(() => {
-		if (beatI >= numBeats - 1 || !projectState.started) {
-			showBoth = true;
-		} else {
-			showBoth = false;
-		}
-	});
-
-	$effect(() => switchSides(side));
 </script>
 
-<svelte:window on:keydown={onKeyDown} on:mousedown={handleClickOutside}/>
+<svelte:window on:keydown={onKeyDown} />
 
 <article class:locked>
-	<div class="main" use:focusTrap={locked && !deepDiveOpen}>
-		<Title bind:side bind:beatI bind:titleHeight />
+	<div class="main" use:focusTrap={locked}>
+		<Title {start} bind:titleHeight />
 
-		<figure
-			class="story"
-			class:started={projectState.started}
-			style={`--title-height: ${titleHeight}px`}
-		>
-			<Html
-				visible={projectState.started}
-				{showBoth}
-				bind:side
-				bind:beatI
-				bind:deepDiveOpen
-				bind:deepDiveContent
-				bind:locked
-			/>
-			<World {side} {showBoth} {direction} {beatI} />
-
+		<figure class="story" class:started={projectState.started} style={`--title-height: ${titleHeight}px`}>
+			<Html visible={projectState.started} {beat} {beatI} {atTheEnd} {answers} {choose} />
+			<World {route} {beatI} {direction} {atTheEnd} />
 			<figcaption class="sr-only">{description}</figcaption>
 		</figure>
 
-		<Bottom
-			visible={projectState.started}
-			{atTheEnd}
-			{numBeats}
-			{next}
-			{prev}
-			bind:locked
-			bind:side
-			bind:beatI
-		/>
-
-		<DeepDive bind:open={deepDiveOpen} content={deepDiveContent} {side} />
-		<div class="gradient" class:visible={beatI < numBeats - 1}></div>
+		<Bottom visible={projectState.started} {beatI} {prev} {atTheEnd} />
 	</div>
 
-	<Methods />
-
-	<svelte:boundary onerror={(e) => console.error(e)}>
-		<Footer recirc={true} recircImages={true} />
-	</svelte:boundary>
+	<Footer />
 </article>
 
 <style>
@@ -164,61 +71,19 @@
 		overflow: auto;
 		height: 100svh;
 	}
-
 	article.locked {
 		overflow: hidden;
 	}
-
 	.main {
 		position: relative;
 		overflow: hidden;
 		height: 100svh;
 	}
-
 	.story {
 		position: relative;
 		overflow: hidden;
-		aspect-ratio: 2400 / 6251;
 		width: 100%;
 		height: 100svh;
-		max-width: 1000px;
 		margin: 0 auto;
-		transform: translate(0, -100px);
-		transition:
-			transform var(--1s) calc(var(--1s) * 0.5) ease-in-out,
-			max-width var(--1s) calc(var(--1s) * 0.5) ease-in-out;
-	}
-
-	.story.started {
-		max-width: 100vw;
-		transform: translate(
-			0,
-			calc(-1 * (var(--title-height) + var(--header-height)))
-		);
-	}
-
-	.gradient {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		height: 6rem;
-		background: linear-gradient(
-			to bottom,
-			rgba(0, 0, 0, 0),
-			rgba(0, 0, 0, 1) 85%
-		);
-		z-index: 3;
-		opacity: 0;
-		transition: opacity calc(var(--1s) * 0.5) ease-in-out;
-	}
-
-	.gradient.visible {
-		opacity: 1;
-	}
-
-	@media (max-width: 650px) {
-		.story {
-			transform: translate(0, 0);
-		}
 	}
 </style>
