@@ -4,7 +4,7 @@
 	import { onMount } from "svelte";
 	import _ from "lodash";
 
-	let { id, beats, route, beatI, direction, camera, worldW, worldH } = $props();
+	let { id, beats, route, beatI, direction, camera, worldW, worldH, onArrive } = $props();
 
 	const everyBeat = Object.entries(_.groupBy(beats, "id")).map(([id, steps]) => ({ id, steps }));
 	const group = (beatId) => everyBeat.find((d) => d.id === beatId) ?? { id: beatId, steps: [] };
@@ -39,7 +39,7 @@
 
 <div id={`side-${id}`} class="side active" class:above={spritePosition === "above"} class:below={spritePosition === "below"}>
 	{#if pathEl && steps.length}
-		<Sprite {id} {allBeats} {otherBeats} {beatId} {steps} {pathEl} bind:spritePosition {sceneryState} active={true} {camera} {worldW} {worldH} />
+		<Sprite {id} {allBeats} {otherBeats} {beatId} {steps} {pathEl} bind:spritePosition {sceneryState} active={true} {camera} {worldW} {worldH} {onArrive} />
 	{/if}
 </div>
 

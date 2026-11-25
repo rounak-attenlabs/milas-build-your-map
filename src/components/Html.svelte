@@ -3,9 +3,9 @@
 	import { prefersReducedMotion } from "svelte/motion";
 	import Ending from "$components/Ending.svelte";
 
-	let { visible, beat, beatI, atTheEnd, answers, route = [], choose } = $props();
+	let { visible, beat, beatI, atTheEnd, answers, route = [], arrived = false, choose } = $props();
 
-	const DELAY = 1600;
+	const DELAY = 250;
 	let paragraphs = $derived(beat?.text ?? []);
 	let options = $derived(beat?.options ?? []);
 </script>
@@ -15,6 +15,7 @@
 		<Ending {answers} {route} />
 	{:else}
 		{#key beatI}
+			{#if arrived}
 			<div class="copy">
 				{#each paragraphs as paragraph, i (paragraph)}
 					<p
@@ -31,7 +32,7 @@
 					class="options"
 					in:fly|local={{
 						duration: prefersReducedMotion.current ? 0 : 250,
-						delay: prefersReducedMotion.current ? 0 : DELAY + paragraphs.length * 250,
+						delay: prefersReducedMotion.current ? 0 : DELAY + paragraphs.length * 250 + 200,
 						y: 30
 					}}
 				>
@@ -40,6 +41,7 @@
 					{/each}
 				</div>
 			</div>
+			{/if}
 		{/key}
 	{/if}
 </div>

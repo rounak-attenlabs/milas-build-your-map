@@ -19,7 +19,8 @@
 		active,
 		camera,
 		worldW,
-		worldH
+		worldH,
+		onArrive
 	} = $props();
 
 	const FRAMERATE = 300;
@@ -227,6 +228,7 @@
 		}
 
 		if (beatId !== "start" && beatId !== "end") idle = true;
+		onArrive?.(beatId);
 	};
 
 	// Update camera position when currentT or dimensions changes

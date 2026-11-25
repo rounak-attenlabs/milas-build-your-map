@@ -33,7 +33,7 @@ const routeIndex = new Map(route.map((p, i) => [key(p.c, p.r), i]));
 const S = route[0];
 const stops = {
 	"hidden-enter": S, start: S,
-	clinic: { c: c0 + 2, r: r0 },
+	clinic: { c: c0 + 3, r: r0 },
 	hospital: { c: c0 + N, r: r0 + 3 },
 	office: { c: c0 + 3, r: r0 + N },
 	"home-end": { c: c0, r: r0 + 1 }
@@ -61,7 +61,7 @@ ring("base", S.c, S.r); ring("base", HOME.c, HOME.r);
 route.forEach((p, i) => { if (i > 0) ring(side(i), p.c, p.r); });
 // buildings' own cells and the cells in front of them
 const CLINIC = { c: c0 + 3, r: r0 - 1 };
-const HOSPITAL = [[c0 + 4, r0 + 2], [c0 + 5, r0 + 2], [c0 + 4, r0 + 3], [c0 + 5, r0 + 3]];
+const HOSPITAL = [[c0 + 4, r0 + 3], [c0 + 5, r0 + 3], [c0 + 4, r0 + 4], [c0 + 5, r0 + 4]];
 const OFFICE = { c: c0 + 3, r: r0 + 5 };
 HOSPITAL.forEach(([cc, rr]) => ring("b", cc, rr));
 // the middle of the loop fills in on the way back
@@ -102,7 +102,7 @@ const building = (name, cells, levelsOf, roof) => {
 };
 building("home", [[HOME.c, HOME.r]], () => ["building_door_E"], "roof_pointBrown_E");
 building("clinic", [[CLINIC.c, CLINIC.r]], () => ["building_doorWindows_E"], "roof_pointGreen_E");
-building("hospital", HOSPITAL, (cc, rr) => [cc === c0 + 5 && rr === r0 + 3 ? "building_doorWindows_S" : "building_windows_E", "building_windows_E"]);
+building("hospital", HOSPITAL, (cc, rr) => [cc === c0 + 5 && rr === r0 + 3 ? "building_doorWindows_S" : "building_windows_E"]);
 building("office", [[OFFICE.c, OFFICE.r]], () => ["building_door_E", "building_window_E"]);
 
 // ---- Render every chunk to a transparent PNG cropped to its content
@@ -143,8 +143,8 @@ const docColours = { ...brand, extra: { "#8FA7DF": "#9fc6c3", "#9FD8E5": CORAL, 
 
 const Sp = xy(S.c, S.r);
 const home = xy(HOME.c, HOME.r), clinic = xy(CLINIC.c, CLINIC.r), office = xy(OFFICE.c, OFFICE.r);
-const hospTop = xy(c0 + 4, r0 + 2), hospFront = xy(c0 + 5, r0 + 3), hospCentre = xy(c0 + 4.5, r0 + 2.5);
-const centre = xy(c0 + 3, r0 + 3);
+const hospFront = xy(c0 + 5, r0 + 3), hospCentre = xy(c0 + 4.5, r0 + 3.5);
+const centre = xy(c0 - 2, r0 + 3); // the stamp sits on the paper beside the map
 const FIG = 190;
 
 const groups = {
@@ -154,19 +154,19 @@ const groups = {
 	// appear as she answers
 	"land-a": img("land-a"),
 	clinic: img("clinic") + pill(clinic.x, top(CLINIC.c, CLINIC.r, 1, 130).y, "Your doctor"),
-	"doctor-yes": figure(clinic.x - 30, clinic.y + 80, FIG, { body: "pose/DocStethoscope", hair: "hair/ShortCurly", face: "face/Smile", colours: docColours }),
+	"doctor-yes": figure(clinic.x + 110, clinic.y + 100, FIG, { body: "pose/DocStethoscope", hair: "hair/ShortCurly", face: "face/Smile", colours: docColours }),
 	"doctor-no": pill(clinic.x - 40, clinic.y - 60, "?", { size: 40, fill: CORAL, color: CREAM }),
 	"land-b": img("land-b"),
-	"hospital-stp": img("hospital") + pill(hospCentre.x, top(c0 + 4.5, r0 + 2.5, 2, 70).y, "St. Philomena’s"),
-	"hospital-other": img("hospital") + pill(hospCentre.x, top(c0 + 4.5, r0 + 2.5, 2, 70).y, "Your hospital"),
-	"hospital-undecided": `<path d="M${hospCentre.x} ${hospCentre.y - 2 * HH}l${2 * HW} ${2 * HH}l${-2 * HW} ${2 * HH}l${-2 * HW} ${-2 * HH}z" fill="rgba(255,248,240,.55)" stroke="${TEAL}" stroke-width="5" stroke-dasharray="14 12" stroke-linejoin="round"/>` + pill(hospCentre.x, hospCentre.y - 80, "Hospital?"),
-	"room-general": pill(hospFront.x - 190, hospFront.y - 40, "General ward", { size: 26, tail: false }),
-	"room-single": pill(hospFront.x - 190, hospFront.y - 40, "Single AC room", { size: 26, tail: false }),
-	"room-deluxe": pill(hospFront.x - 190, hospFront.y - 40, "Deluxe room", { size: 26, tail: false }),
+	"hospital-stp": img("hospital") + pill(hospCentre.x, top(c0 + 4.5, r0 + 3.5, 1, 80).y, "St. Philomena’s"),
+	"hospital-other": img("hospital") + pill(hospCentre.x, top(c0 + 4.5, r0 + 3.5, 1, 80).y, "Your hospital"),
+	"hospital-undecided": `<path d="M${hospCentre.x} ${hospCentre.y - 2 * HH}l${2 * HW} ${2 * HH}l${-2 * HW} ${2 * HH}l${-2 * HW} ${-2 * HH}z" fill="rgba(255,248,240,.55)" stroke="${TEAL}" stroke-width="5" stroke-dasharray="14 12" stroke-linejoin="round"/>` + pill(hospCentre.x, hospCentre.y - 70, "Hospital · not decided", { size: 26 }),
+	"room-general": pill(hospFront.x - 150, hospFront.y + 10, "General ward", { size: 26, tail: false }),
+	"room-single": pill(hospFront.x - 150, hospFront.y + 10, "Single AC room", { size: 26, tail: false }),
+	"room-deluxe": pill(hospFront.x - 150, hospFront.y + 10, "Deluxe room", { size: 26, tail: false }),
 	"land-c": img("land-c"),
 	"ins-yes": img("office") + pill(office.x, top(OFFICE.c, OFFICE.r, 2, 60).y, "Insurance · covered", { fill: "#dff1e3" }),
-	"ins-no": img("office") + pill(office.x, top(OFFICE.c, OFFICE.r, 2, 60).y, "Insurance · none", { fill: "#fbe0d8" }),
-	"ins-unsure": img("office") + pill(office.x, top(OFFICE.c, OFFICE.r, 2, 60).y, "Insurance · check", { fill: "#fff2cc" }),
+	"ins-no": img("office") + pill(office.x, top(OFFICE.c, OFFICE.r, 2, 60).y, "Insurance · not covered", { fill: "#fbe0d8" }),
+	"ins-unsure": img("office") + pill(office.x, top(OFFICE.c, OFFICE.r, 2, 60).y, "Insurance · to check", { fill: "#fff2cc" }),
 	"land-d": img("land-d"),
 	"fam-partner": figure(Sp.x + 80, Sp.y + 10, FIG, { body: "pose/ShirtPantsBW", hair: "hair/Short", face: "face/Smile", colours: brand }),
 	"fam-mother": figure(Sp.x + 80, Sp.y + 10, FIG * 0.92, { body: "pose/RestingBW", hair: "hair/GrayBun", face: "face/OldAged", colours: brand }),

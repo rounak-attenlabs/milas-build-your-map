@@ -15,6 +15,7 @@
 	let answers = $state({});
 	let titleHeight = $state(0);
 	let locked = $state(true);
+	let arrived = $state(false); // the card waits until she has reached the stop
 
 	let beatId = $derived(route[beatI]);
 	let beat = $derived(story.beats[beatId]);
@@ -23,6 +24,7 @@
 
 	const choose = (option) => {
 		if (option.key) answers[option.key] = option.value;
+		arrived = false;
 		direction = "forward";
 		route = [...route.slice(0, beatI + 1), option.next];
 		beatI += 1;
@@ -37,9 +39,14 @@
 	const prev = () => {
 		if (beatI <= 1) return;
 		direction = "backward";
+		arrived = false;
 		beatI -= 1;
 		locked = true;
 		document.querySelector(".main")?.scrollIntoView({ behavior: "instant", block: "end" });
+	};
+
+	const onArrive = (id) => {
+		if (id === beatId) arrived = true;
 	};
 
 	const onKeyDown = (e) => {
@@ -55,8 +62,8 @@
 		<Title {start} bind:titleHeight />
 
 		<figure class="story" class:started={projectState.started} style={`--title-height: ${titleHeight}px`}>
-			<Html visible={projectState.started} {beat} {beatI} {atTheEnd} {answers} {route} {choose} />
-			<World {route} {beatI} {direction} {atTheEnd} />
+			<Html visible={projectState.started} {beat} {beatI} {atTheEnd} {answers} {route} {arrived} {choose} />
+			<World {route} {beatI} {direction} {atTheEnd} {onArrive} />
 			<figcaption class="sr-only">{description}</figcaption>
 		</figure>
 

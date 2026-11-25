@@ -42,7 +42,7 @@
 		gap: 1rem;
 		padding: calc(var(--header-height) + 1rem) 1.25rem 2rem;
 		text-align: center;
-		background: linear-gradient(180deg, rgba(244, 239, 230, 0.55), rgba(244, 239, 230, 0.92) 70%);
+		background: linear-gradient(180deg, rgba(244, 239, 230, 0) 14%, rgba(244, 239, 230, 0.95) 38%);
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity calc(var(--1s) * 0.6) ease-in-out;
@@ -119,8 +119,16 @@
 		color: var(--muted);
 	}
 	@media (max-width: 600px) {
+		#title {
+			justify-content: flex-end;
+			gap: 0.6rem;
+			padding-bottom: 1.25rem;
+		}
 		h1 {
-			font-size: var(--44px);
+			font-size: var(--40px);
+		}
+		.card {
+			margin-top: 0.4rem;
 		}
 		.intro {
 			font-size: var(--16px);

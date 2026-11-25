@@ -10,7 +10,7 @@
 	import { cubicInOut } from "svelte/easing";
 	import { browser } from "$app/environment";
 
-	let { route, beatI, direction, atTheEnd } = $props();
+	let { route, beatI, direction, atTheEnd, onArrive } = $props();
 
 	const svgW = 2755;
 	const svgH = 6854;
@@ -51,7 +51,8 @@
 		const cx = el ? el.cx.baseVal.value : svgW / 2;
 		const cy = el ? el.cy.baseVal.value : 1540;
 		// Phones: she stands in the upper third, the card sits below. Desktop: the card is on the left, she is right of centre.
-		return { x: cx - w * (phone ? 0.5 : 0.62), y: cy - h * (phone ? 0.42 : 0.55), w, h };
+		const yFrac = beatI === 0 ? (phone ? 0.22 : 0.5) : phone ? 0.42 : 0.55;
+		return { x: cx - w * (phone || beatI === 0 ? 0.5 : 0.62), y: cy - h * yFrac, w, h };
 	});
 
 	const camera = new Tween({ x: svgW / 2 - 400, y: 1540 - 500, w: 800, h: 1600 }, { duration: 1800, easing: cubicInOut });
@@ -59,7 +60,8 @@
 
 	const updateCamera = () => {
 		if (!worldW) return;
-		const duration = prefersReducedMotion.current || first ? 0 : zoomOut ? 2600 : 1800;
+		// The pan lasts about as long as her pause plus walk, so she stays in frame on the way
+		const duration = prefersReducedMotion.current || first ? 0 : zoomOut ? 2600 : 3000;
 		first = false;
 		camera.set({ ...view }, { duration });
 	};
@@ -87,7 +89,7 @@
 	<div class="foreground">{@html foregroundSvg}</div>
 	<div class="mask">{@html maskSvg}</div>
 	<div class="overlay">{@html overlaySvg}</div>
-	<Side id="mom" {beats} {route} {beatI} {direction} {camera} {worldW} {worldH} />
+	<Side id="mom" {beats} {route} {beatI} {direction} {camera} {worldW} {worldH} {onArrive} />
 </div>
 
 <style>
