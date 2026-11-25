@@ -1,0 +1,1 @@
+Vector parts in `parts.json` come from Open Peeps by Pablo Stanley (https://www.openpeeps.com), released under CC0 1.0, as packaged in react-peeps by CeamKrier (https://github.com/CeamKrier/react-peeps, MIT). Extracted with `tools/extract-peeps.mjs`.

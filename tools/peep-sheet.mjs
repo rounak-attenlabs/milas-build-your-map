@@ -1,0 +1,21 @@
+// Contact sheet of the extracted parts, for picking poses, hair and faces. node tools/peep-sheet.mjs <out.png>
+import puppeteer from "puppeteer-core";
+import fs from "node:fs";
+import { pathToFileURL } from "node:url";
+import { parts, peep, svg, brand } from "./peep.mjs";
+const groups = { pose: [], bust: [], hair: [], face: [] };
+Object.keys(parts).forEach((k) => groups[k.split("/")[0]].push(k));
+let html = `<body style="margin:0;background:#f4efe6;font:13px sans-serif">`;
+const cell = (label, inner) => `<div style="display:inline-block;text-align:center;margin:4px"><div style="width:120px;height:170px;background:#fff">${svg(inner, { w: 120, h: 170, viewBox: "0 0 850 1200" })}</div>${label}</div>`;
+html += "<h3>poses</h3>" + groups.pose.map((b) => cell(b, peep({ body: b, hair: "hair/LongCurly", face: "face/Smile", colours: brand }))).join("");
+html += "<h3>busts</h3>" + groups.bust.map((b) => cell(b, peep({ body: b, hair: "hair/Bun", face: "face/Calm", colours: brand }))).join("");
+html += "<h3>hair</h3>" + groups.hair.map((b) => cell(b, peep({ body: "pose/RestingBW", hair: b, face: "face/Smile", colours: brand }))).join("");
+html += "<h3>faces</h3>" + groups.face.map((b) => cell(b, peep({ body: "pose/RestingBW", hair: "hair/LongCurly", face: b, colours: brand }))).join("");
+const tmp = process.argv[2].replace(/\.png$/, ".html");
+fs.writeFileSync(tmp, html + "</body>");
+const browser = await puppeteer.launch({ executablePath: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", headless: true });
+const page = await browser.newPage();
+await page.setViewport({ width: 1300, height: 900, deviceScaleFactor: 1 });
+await page.goto(pathToFileURL(tmp).href);
+await page.screenshot({ path: process.argv[2], fullPage: true });
+await browser.close();

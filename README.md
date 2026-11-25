@@ -1,8 +1,8 @@
-# Build your map (greybox)
+# Build your map
 
 MILA'S two-minute "Build your map" experience, built on The Pudding's open-source story engine from [the-pudding/ivf](https://github.com/the-pudding/ivf) (MIT). Forked 25 November 2026 by Atten Labs.
 
-What is The Pudding's: the engine (beats sheet, path markers, SVG viewBox camera, sprite along a path, scenery actions, reduced-motion handling). What is ours: every picture, the words, the branching, the ending. The Pudding's illustrations, fonts and logos were removed; the grey world and figure in `src/svg` and `static/assets/sprites` are placeholders drawn by script for layout only.
+What is The Pudding's: the engine (beats sheet, path markers, SVG viewBox camera, sprite along a path, scenery actions, reduced-motion handling). What is ours: every picture, the words, the branching, the ending. The Pudding's illustrations, fonts and logos were removed. The world, the figures and the props are built by script from two CC0 sources: Kenney's Sketch Town tiles (the town) and Open Peeps (the people), recoloured in MILA'S teal and cream. See `art-src/README.md` and the three scripts in `tools/`: `build-world.mjs` (terrain picture, path and markers), `build-sprites.mjs` (the mother's sprite sheet) and `build-foreground.mjs` (props at each stop). Change the route or the buildings in `build-world.mjs`, then run all three in that order.
 
 ## Run
 
