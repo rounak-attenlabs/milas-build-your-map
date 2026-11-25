@@ -31,7 +31,7 @@
 	onMount(() => {
 		pathEl = document.querySelector(`.${id}-path path`);
 		for (const sceneryId in scenery) {
-			const els = document.querySelectorAll(`.Foreground .${sceneryId}`);
+			const els = document.querySelectorAll(`.world .${sceneryId}`);
 			if (els.length) scenery[sceneryId].reset(els);
 		}
 	});

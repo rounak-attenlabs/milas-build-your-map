@@ -1,6 +1,6 @@
 <script>
 	import chevronUpSvg from "$svg/chevron-up.svg";
-	let { visible, beatI, prev, atTheEnd } = $props();
+	let { visible, beatI, prev, atTheEnd, label = "" } = $props();
 </script>
 
 <div class="bottom" class:visible>
@@ -8,7 +8,7 @@
 		<span>{@html chevronUpSvg}</span>
 		Back
 	</button>
-	<span class="counter">{atTheEnd ? "Your map" : `Stop ${beatI}`}</span>
+	<span class="counter">{atTheEnd ? "Your map" : label || "Home"}</span>
 	<span class="hint">{atTheEnd ? "" : "Tap an answer to continue"}</span>
 </div>
 

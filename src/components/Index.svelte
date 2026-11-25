@@ -55,12 +55,12 @@
 		<Title {start} bind:titleHeight />
 
 		<figure class="story" class:started={projectState.started} style={`--title-height: ${titleHeight}px`}>
-			<Html visible={projectState.started} {beat} {beatI} {atTheEnd} {answers} {choose} />
+			<Html visible={projectState.started} {beat} {beatI} {atTheEnd} {answers} {route} {choose} />
 			<World {route} {beatI} {direction} {atTheEnd} />
 			<figcaption class="sr-only">{description}</figcaption>
 		</figure>
 
-		<Bottom visible={projectState.started} {beatI} {prev} {atTheEnd} />
+		<Bottom visible={projectState.started} {beatI} {prev} {atTheEnd} label={beat?.place} />
 	</div>
 
 	<Footer />

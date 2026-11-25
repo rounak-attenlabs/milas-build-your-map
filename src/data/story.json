@@ -2,112 +2,237 @@
   "meta": {
     "title": "Build your map",
     "description": "Two minutes to see what matters at your stage of pregnancy, who can help, and your next step. MILA’S, MAPS for parenthood.",
-    "url": "https://milas-preview-k7x2m9.netlify.app/build-your-map",
+    "url": "https://milas-map-preview-k7x2m9.netlify.app",
     "keywords": "pregnancy, maternity, Bengaluru, St. Philomena’s, MILA’S, MAPS"
   },
   "hed": "Build your map",
-  "intro": "Two minutes. A few taps. At the end you get your map: what matters at your stage, who can help, and your next step.",
+  "intro": "Start at home. Each answer adds a place to your map. At the end you keep the map and your three next stops.",
   "landing": {
     "question": "Where are you right now?",
     "options": [
-      { "label": "Trying for a baby", "next": "trying", "key": "stage", "value": "trying" },
-      { "label": "Pregnant", "next": "weeks", "key": "stage", "value": "pregnant" },
-      { "label": "Baby is here", "next": "feeding", "key": "stage", "value": "baby" }
+      { "label": "Trying for a baby", "next": "clinic-trying", "key": "stage", "value": "trying" },
+      { "label": "Pregnant", "next": "clinic-pregnant", "key": "stage", "value": "pregnant" },
+      { "label": "Baby is here", "next": "clinic-baby", "key": "stage", "value": "baby" }
     ]
   },
   "beats": {
-    "weeks": {
-      "text": ["Lovely. Roughly how far along are you? A guess is fine."],
+    "clinic-pregnant": {
+      "place": "Your doctor",
+      "text": ["First place on the map: your doctor. Roughly how far along are you? A guess is fine."],
       "options": [
         { "label": "Under 12 weeks", "next": "doctor", "key": "weeks", "value": "early" },
         { "label": "12 to 27 weeks", "next": "doctor", "key": "weeks", "value": "middle" },
         { "label": "28 weeks or more", "next": "doctor", "key": "weeks", "value": "late" }
       ],
-      "description": "She walks from home onto the road."
+      "description": "A road appears and she walks from home to a small clinic."
     },
-    "trying": {
-      "text": [
-        "Good place to start. Most of what shapes a first pregnancy is decided in the first few weeks, often before anyone has told the family.",
-        "Let’s see who is around you."
-      ],
+    "clinic-trying": {
+      "place": "Your doctor",
+      "text": ["First place on the map: a doctor. Most of what shapes a first pregnancy is decided in the first weeks, often before anyone has told the family."],
       "options": [{ "label": "Continue", "next": "doctor" }],
-      "description": "She walks a little way along the road."
+      "description": "A road appears and she walks from home to a small clinic."
     },
-    "feeding": {
-      "text": ["Congratulations. How old is your baby?"],
+    "clinic-baby": {
+      "place": "Your doctor",
+      "text": ["Congratulations. First place on the map: the baby’s doctor. How old is your baby?"],
       "options": [
-        { "label": "Under six weeks", "next": "family", "key": "babyAge", "value": "newborn" },
-        { "label": "Six weeks to six months", "next": "family", "key": "babyAge", "value": "infant" },
-        { "label": "Older", "next": "family", "key": "babyAge", "value": "older" }
+        { "label": "Under six weeks", "next": "doctor", "key": "babyAge", "value": "newborn" },
+        { "label": "Six weeks to six months", "next": "doctor", "key": "babyAge", "value": "infant" },
+        { "label": "Older", "next": "doctor", "key": "babyAge", "value": "older" }
       ],
-      "description": "She walks carrying the baby."
+      "description": "A road appears and she walks from home to a small clinic, carrying the baby."
     },
     "doctor": {
+      "place": "Your doctor",
       "text": ["Do you have a doctor you see regularly?"],
       "options": [
-        { "label": "Yes", "next": "hospital", "key": "doctor", "value": "yes" },
-        { "label": "Not yet", "next": "hospital", "key": "doctor", "value": "no" }
+        { "label": "Yes", "next": "doctor-yes", "key": "doctor", "value": "yes" },
+        { "label": "Not yet", "next": "doctor-no", "key": "doctor", "value": "no" }
       ],
-      "description": "A clinic appears beside the road with a pin above it."
+      "description": "She waits at the clinic door."
     },
-    "hospital": {
+    "doctor-yes": {
+      "place": "Your doctor",
       "text": [
-        "<strong>Your doctor makes every medical decision.</strong> MILA’S helps with everything around it, from costs to what to ask at the next visit.",
-        "Where will the baby arrive?"
+        "Good. <strong>Your doctor makes every medical decision.</strong> MILA’S helps with everything around it: costs, paperwork, what to ask at the next visit.",
+        "Next place: where will the baby arrive?"
       ],
       "options": [
-        { "label": "St. Philomena’s", "next": "room", "key": "hospital", "value": "stp" },
-        { "label": "Another hospital", "next": "room", "key": "hospital", "value": "other" },
-        { "label": "Not decided", "next": "room", "key": "hospital", "value": "undecided" }
+        { "label": "St. Philomena’s", "next": "hosp-stp", "key": "hospital", "value": "stp" },
+        { "label": "Another hospital", "next": "hosp-other", "key": "hospital", "value": "other" },
+        { "label": "Not decided", "next": "hosp-undecided", "key": "hospital", "value": "undecided" }
       ],
-      "description": "A hospital rises further down the road."
+      "description": "The doctor steps out of the clinic."
     },
-    "room": {
+    "doctor-no": {
+      "place": "Your doctor",
       "text": [
-        "Good to know: a full delivery package at St. Philomena’s J Ward is <strong>₹1,56,000 all in</strong>. Stay beyond the standard package is charged at room rates, shown before admission.",
+        "That is the first thing to sort out, and we can help you choose one. <strong>Your doctor makes every medical decision.</strong> MILA’S handles everything around it.",
+        "Next place: where will the baby arrive?"
+      ],
+      "options": [
+        { "label": "St. Philomena’s", "next": "hosp-stp", "key": "hospital", "value": "stp" },
+        { "label": "Another hospital", "next": "hosp-other", "key": "hospital", "value": "other" },
+        { "label": "Not decided", "next": "hosp-undecided", "key": "hospital", "value": "undecided" }
+      ],
+      "description": "A question mark appears over the clinic door."
+    },
+    "hosp-stp": {
+      "place": "St. Philomena’s",
+      "text": [
+        "St. Philomena’s is on your map. A full delivery package at the J Ward is <strong>₹1,56,000 all in</strong>. Anything beyond the standard stay is charged at room rates, shown before admission.",
         "Which room would you pick?"
       ],
       "options": [
-        { "label": "General ward", "next": "insurance", "key": "room", "value": "general" },
-        { "label": "Single AC room", "next": "insurance", "key": "room", "value": "single" },
-        { "label": "Deluxe room", "next": "insurance", "key": "room", "value": "deluxe" }
+        { "label": "General ward", "next": "room-general", "key": "room", "value": "general" },
+        { "label": "Single AC room", "next": "room-single", "key": "room", "value": "single" },
+        { "label": "Deluxe room", "next": "room-deluxe", "key": "room", "value": "deluxe" }
       ],
-      "description": "A price tag appears beside the hospital."
+      "description": "The road turns and St. Philomena’s hospital rises beside it."
     },
-    "insurance": {
+    "hosp-other": {
+      "place": "Your hospital",
       "text": [
-        "Most people are not sure about this one. If a room costs more than your policy’s <strong>room rent limit</strong>, the insurer can pay less on the rest of the bill too, not just the room.",
-        "Does your insurance cover the delivery?"
+        "Your hospital is on the map. Ask them for a written estimate for the package you want, and what is charged on top. We read it with you.",
+        "Which room would you pick?"
       ],
       "options": [
-        { "label": "Yes", "next": "family", "key": "insurance", "value": "yes" },
-        { "label": "No", "next": "family", "key": "insurance", "value": "no" },
-        { "label": "I’m not sure", "next": "family", "key": "insurance", "value": "unsure" }
+        { "label": "General ward", "next": "room-general", "key": "room", "value": "general" },
+        { "label": "Single AC room", "next": "room-single", "key": "room", "value": "single" },
+        { "label": "Deluxe room", "next": "room-deluxe", "key": "room", "value": "deluxe" }
       ],
-      "description": "A policy card appears on the road."
+      "description": "The road turns and a hospital rises beside it."
     },
-    "family": {
-      "text": ["Who is travelling with you?"],
-      "options": [
-        { "label": "My partner", "next": "end", "key": "family", "value": "partner" },
-        { "label": "My mother or mother-in-law", "next": "end", "key": "family", "value": "mother" },
-        { "label": "Partner and family", "next": "end", "key": "family", "value": "both" },
-        { "label": "Just me", "next": "end", "key": "family", "value": "solo" }
+    "hosp-undecided": {
+      "place": "Hospital, not decided",
+      "text": [
+        "No hurry. We hold a space on the map for it. At St. Philomena’s the J Ward delivery package is <strong>₹1,56,000 all in</strong>, and we can walk you through the ward before you decide.",
+        "If you had to pick a room today?"
       ],
-      "description": "Family faces appear beside her."
+      "options": [
+        { "label": "General ward", "next": "room-general", "key": "room", "value": "general" },
+        { "label": "Single AC room", "next": "room-single", "key": "room", "value": "single" },
+        { "label": "Deluxe room", "next": "room-deluxe", "key": "room", "value": "deluxe" }
+      ],
+      "description": "The road turns and a dotted outline marks where the hospital will go."
+    },
+    "room-general": {
+      "place": "General ward",
+      "text": [
+        "General ward, noted on the map. The lowest bill and the busiest ward.",
+        "Does your health insurance cover the delivery?"
+      ],
+      "options": [
+        { "label": "Yes", "next": "ins-yes", "key": "insurance", "value": "yes" },
+        { "label": "No", "next": "ins-no", "key": "insurance", "value": "no" },
+        { "label": "I’m not sure", "next": "ins-unsure", "key": "insurance", "value": "unsure" }
+      ],
+      "description": "A room tag appears on the hospital."
+    },
+    "room-single": {
+      "place": "Single AC room",
+      "text": [
+        "Single AC room, noted on the map. Room rent is the number insurers look at first, so keep it handy.",
+        "Does your health insurance cover the delivery?"
+      ],
+      "options": [
+        { "label": "Yes", "next": "ins-yes", "key": "insurance", "value": "yes" },
+        { "label": "No", "next": "ins-no", "key": "insurance", "value": "no" },
+        { "label": "I’m not sure", "next": "ins-unsure", "key": "insurance", "value": "unsure" }
+      ],
+      "description": "A room tag appears on the hospital."
+    },
+    "room-deluxe": {
+      "place": "Deluxe room",
+      "text": [
+        "Deluxe room, noted on the map. Comfortable, and the one most likely to cross a policy’s room rent limit.",
+        "Does your health insurance cover the delivery?"
+      ],
+      "options": [
+        { "label": "Yes", "next": "ins-yes", "key": "insurance", "value": "yes" },
+        { "label": "No", "next": "ins-no", "key": "insurance", "value": "no" },
+        { "label": "I’m not sure", "next": "ins-unsure", "key": "insurance", "value": "unsure" }
+      ],
+      "description": "A room tag appears on the hospital."
+    },
+    "ins-yes": {
+      "place": "Insurance: covered",
+      "text": [
+        "Covered. One check before admission: if your room costs more than the policy’s <strong>room rent limit</strong>, the insurer can pay less on the whole bill, not just the room.",
+        "Last place. Who is travelling with you?"
+      ],
+      "options": [
+        { "label": "My partner", "next": "fam-partner", "key": "family", "value": "partner" },
+        { "label": "My mother or mother-in-law", "next": "fam-mother", "key": "family", "value": "mother" },
+        { "label": "Partner and family", "next": "fam-both", "key": "family", "value": "both" },
+        { "label": "Just me", "next": "fam-solo", "key": "family", "value": "solo" }
+      ],
+      "description": "The insurance office appears with a green tick."
+    },
+    "ins-no": {
+      "place": "Insurance: none",
+      "text": [
+        "No cover, so the bill is yours. That makes the written estimate and the room choice the two numbers that matter most. We plan around them with you.",
+        "Last place. Who is travelling with you?"
+      ],
+      "options": [
+        { "label": "My partner", "next": "fam-partner", "key": "family", "value": "partner" },
+        { "label": "My mother or mother-in-law", "next": "fam-mother", "key": "family", "value": "mother" },
+        { "label": "Partner and family", "next": "fam-both", "key": "family", "value": "both" },
+        { "label": "Just me", "next": "fam-solo", "key": "family", "value": "solo" }
+      ],
+      "description": "The insurance office appears, marked not covered."
+    },
+    "ins-unsure": {
+      "place": "Insurance: check",
+      "text": [
+        "Most people are not sure. Send us the policy and we find the maternity cover, the waiting period and the <strong>room rent limit</strong> for you.",
+        "Last place. Who is travelling with you?"
+      ],
+      "options": [
+        { "label": "My partner", "next": "fam-partner", "key": "family", "value": "partner" },
+        { "label": "My mother or mother-in-law", "next": "fam-mother", "key": "family", "value": "mother" },
+        { "label": "Partner and family", "next": "fam-both", "key": "family", "value": "both" },
+        { "label": "Just me", "next": "fam-solo", "key": "family", "value": "solo" }
+      ],
+      "description": "The insurance office appears with a question mark."
+    },
+    "fam-partner": {
+      "place": "Home, with your partner",
+      "text": ["Your partner is waiting at home. Bring them to the next appointment and the Meet Mila call, so two people hear everything."],
+      "options": [{ "label": "See my map", "next": "end" }],
+      "description": "The road comes back home and her partner waits at the door."
+    },
+    "fam-mother": {
+      "place": "Home, with your mother",
+      "text": ["Your mother is waiting at home. She has done this before, and the hospital has changed since. We brief you both."],
+      "options": [{ "label": "See my map", "next": "end" }],
+      "description": "The road comes back home and her mother waits at the door."
+    },
+    "fam-both": {
+      "place": "Home, with family",
+      "text": ["A full house. Pick one person to hold the paperwork and one to hold the phone, and the hospital days get easier."],
+      "options": [{ "label": "See my map", "next": "end" }],
+      "description": "The road comes back home and the family waits at the door."
+    },
+    "fam-solo": {
+      "place": "Home",
+      "text": ["Then Mila walks with you. One number to message, one person who knows your map."],
+      "options": [{ "label": "See my map", "next": "end" }],
+      "description": "The road comes back home."
     },
     "end": {
       "text": [],
       "options": [],
-      "description": "She reaches the end of the road and the needle settles."
+      "description": "The map pulls back to show the whole route, home to home."
     }
   },
   "ending": {
     "title": "This is your map.",
-    "sub": "Three stops that matter now",
+    "sub": "Your three next stops",
     "consent": "I’m happy for MILA’S to message me about my map. My answers are used only for this.",
     "button": "Send me my map on WhatsApp",
     "after": "Your map is on its way. Someone from the team will reply during working hours. A message is not a booking until the team confirms one with you."
   },
-  "credit": "Built on The Pudding’s open-source story engine (MIT). Illustrations are placeholders."
+  "credit": "Built on The Pudding’s open-source story engine (MIT). Town tiles by Kenney, people by Open Peeps (both CC0)."
 }

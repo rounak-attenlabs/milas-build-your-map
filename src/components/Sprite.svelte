@@ -144,7 +144,7 @@
 		const performed = sceneryState[sceneryId][sceneryAction];
 		if (performed) return;
 
-		const els = document.querySelectorAll(`.Foreground .${sceneryId}`);
+		const els = document.querySelectorAll(`.world .${sceneryId}`);
 		const actionHandler = scenery[sceneryId][sceneryAction];
 		if (actionHandler) {
 			actionHandler(els);
@@ -156,44 +156,30 @@
 		// Jump to start
 		await moveTo(steps[0].startSpot, 0);
 
-		// Apply previous scenery actions
+		// Scenery she has already passed stays; everything else (later beats and the branches she did not take) is hidden.
+		// Variants of one stop share scenery (the three clinic beats all place the clinic), so the reset skips anything a previous beat placed.
 		const i = allBeats.findIndex((d) => d.id === beatId);
 		const previousBeats = i === -1 ? allBeats : allBeats.slice(0, i);
 		const previousSceneryActions = previousBeats
 			.flatMap((beat) => beat.steps ?? [])
 			.filter((step) => step.scenery && step.sceneryAction)
-			.map((step) => ({
-				scenery: step.scenery,
-				sceneryAction: step.sceneryAction
-			}));
-		previousSceneryActions.forEach((d) => {
-			performSceneryAction(d.scenery, d.sceneryAction);
-		});
+			.map((step) => ({ scenery: step.scenery, sceneryAction: step.sceneryAction }));
+		const keep = new Set(previousSceneryActions.map((d) => d.scenery));
+		const current = new Set((allBeats[i]?.steps ?? []).filter((s) => s.scenery).map((s) => s.scenery));
 
-		// Fade out previous scenery
-		// previousBeats
-		// 	.filter((d) => d.steps.some((s) => s.scenery && s.sceneryAction))
-		// 	.forEach((beat) => {
-		// 		const actions = beat.steps.filter((s) => s.scenery && s.sceneryAction);
-		// 		actions.forEach((step) => {
-		// 			const els = document.querySelectorAll(`.Foreground .${step.scenery}`);
-		// 			if (scenery[step.scenery].fade) scenery[step.scenery].fade(els);
-		// 			else els.forEach((el) => (el.style.opacity = "0.2"));
-		// 		});
-		// 	});
-
-		// Reset future scenery
 		const futureSceneryActions = [...allBeats.slice(i + 1), ...otherBeats]
 			.flatMap((beat) => beat.steps ?? [])
-			.filter((step) => step.scenery && step.sceneryAction);
+			.filter((step) => step.scenery && step.sceneryAction && !keep.has(step.scenery) && !current.has(step.scenery));
 		futureSceneryActions.forEach((d) => {
-			const els = document.querySelectorAll(`.Foreground .${d.scenery}`);
+			const els = document.querySelectorAll(`.world .${d.scenery}`);
 			const resetter = scenery[d.scenery].reset;
 			if (els && resetter) {
 				resetter(els);
 				sceneryState[d.scenery][d.sceneryAction] = false;
 			}
 		});
+
+		previousSceneryActions.forEach((d) => performSceneryAction(d.scenery, d.sceneryAction));
 	};
 
 	const performSteps = async () => {

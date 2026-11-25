@@ -5,6 +5,7 @@
 	import maskSvg from "$svg/world-mask.svg";
 	import overlaySvg from "$svg/world-overlay.svg";
 	import beats from "$data/beats.csv";
+	import extent from "$data/map-extent.json";
 	import { Tween, prefersReducedMotion } from "svelte/motion";
 	import { cubicInOut } from "svelte/easing";
 	import { browser } from "$app/environment";
@@ -13,7 +14,7 @@
 
 	const svgW = 2755;
 	const svgH = 6854;
-	const initialZoom = 2.25;
+	const PAD = 110;
 
 	let worldW = $state(0);
 	let worldH = $state(0);
@@ -21,57 +22,63 @@
 	let zoomOut = $state(false);
 
 	let beatId = $derived(route[beatI]);
-	// Zoom in a little more on narrow screens so the figure reads at phone size
-	const zoom = $derived(beatI === 0 ? initialZoom : zoomOut ? 1.6 : worldW < 700 ? 3.2 : 4);
-	const viewboxW = $derived(svgW / zoom);
-	const viewboxH = $derived(svgH / zoom);
+	let phone = $derived(worldW < 700);
 
 	const spotFor = (id) => {
 		if (!browser) return null;
 		const steps = beats.filter((d) => d.id === id);
-		if (!steps.length) return null;
-		return document.querySelector(`.world .markers .mom circle.${steps.at(-1).endSpot}`);
+		const name = steps.length ? steps.at(-1).endSpot : "start";
+		return document.querySelector(`.world .markers .mom circle.${name}`);
 	};
 
-	const viewboxX = $derived.by(() => {
-		if (!browser || beatI === 0) return svgW / 2 - viewboxW / 2;
+	// The camera: a window on the map in map units. Its shape always matches the screen, so nothing letterboxes.
+	const view = $derived.by(() => {
+		const aspect = worldW && worldH ? worldW / worldH : 0.5;
+		if (zoomOut) {
+			// Pull back to the whole map. On phones the result sheet covers the lower half, so the map sits in the top half.
+			const usable = phone ? 0.5 : 0.92;
+			let w = extent.w + PAD * 2;
+			let h = extent.h + PAD * 2;
+			if (w / (h / usable) < aspect) w = (h / usable) * aspect;
+			else h = (w / aspect) * usable;
+			const H = h / usable;
+			return { x: extent.x + extent.w / 2 - w / 2, y: extent.y + extent.h / 2 - h / 2 - (phone ? 0 : (H - h) / 2), w, h: H };
+		}
+		const zoom = phone ? 3.4 : 1.8;
+		const w = svgW / zoom;
+		const h = w / aspect;
 		const el = spotFor(beatId);
-		if (!el) return svgW / 2 - viewboxW / 2;
-		const cx = el.cx.baseVal.value;
-		return Math.max(0, Math.min(svgW - viewboxW, cx - viewboxW / 2));
-	});
-	const viewboxY = $derived.by(() => {
-		if (!browser || beatI === 0) return 0;
-		const el = spotFor(beatId);
-		if (!el) return 0;
-		// Keep the figure in the upper third on phones, since the text sits at the bottom
-		return Math.max(0, el.cy.baseVal.value - viewboxH * (worldW < 700 ? 0.3 : 0.45));
+		const cx = el ? el.cx.baseVal.value : svgW / 2;
+		const cy = el ? el.cy.baseVal.value : 1540;
+		// Phones: she stands in the upper third, the card sits below. Desktop: the card is on the left, she is right of centre.
+		return { x: cx - w * (phone ? 0.5 : 0.62), y: cy - h * (phone ? 0.42 : 0.55), w, h };
 	});
 
-	const camera = new Tween(
-		{ x: svgW / 2 - svgW / (2 * initialZoom), y: 0, w: svgW / initialZoom, h: svgH / initialZoom },
-		{ duration: prefersReducedMotion.current ? 0 : 1800, easing: cubicInOut }
-	);
+	const camera = new Tween({ x: svgW / 2 - 400, y: 1540 - 500, w: 800, h: 1600 }, { duration: 1800, easing: cubicInOut });
+	let first = true;
 
 	const updateCamera = () => {
-		camera.set({ x: viewboxX, y: viewboxY, w: viewboxW, h: viewboxH }, { duration: prefersReducedMotion.current ? 0 : zoomOut ? 3000 : 1800 });
+		if (!worldW) return;
+		const duration = prefersReducedMotion.current || first ? 0 : zoomOut ? 2600 : 1800;
+		first = false;
+		camera.set({ ...view }, { duration });
 	};
 
 	const animateViewbox = () => {
 		document.querySelectorAll(".world svg, .mask svg, .overlay svg, .foreground svg").forEach((el) => {
 			const { x, y, w, h } = camera.current;
 			el.setAttribute("viewBox", `${x} ${y} ${w} ${h}`);
-			if (!worldVisible) worldVisible = true;
+			if (!worldVisible && worldW) worldVisible = true;
 		});
 	};
 
 	$effect(() => {
 		zoomOut = false;
 		if (!atTheEnd) return;
-		const t = setTimeout(() => (zoomOut = true), 6000);
+		const t = setTimeout(() => (zoomOut = true), 2200);
 		return () => clearTimeout(t);
 	});
-	$effect(() => updateCamera(beatI, zoomOut, worldW));
+	$effect(() => updateCamera(view));
 	$effect(() => animateViewbox(camera.current));
 </script>
 
@@ -115,5 +122,8 @@
 	}
 	:global(.world .mom-path, .world .baby-path, .world .markers) {
 		opacity: 0;
+	}
+	:global(.world .Places .label text) {
+		paint-order: stroke;
 	}
 </style>

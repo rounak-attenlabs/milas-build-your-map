@@ -4,7 +4,7 @@
 	import story from "$data/story.json";
 
 	let { start, titleHeight = $bindable() } = $props();
-	let visible = $state(false);
+	let visible = $state(true); // rendered visible from the first paint; the fade is only used on the way out
 
 	const go = (option) => {
 		visible = false;
@@ -42,7 +42,7 @@
 		gap: 1rem;
 		padding: calc(var(--header-height) + 1rem) 1.25rem 2rem;
 		text-align: center;
-		background: linear-gradient(180deg, rgba(242, 248, 247, 0.96), rgba(242, 248, 247, 0.9));
+		background: linear-gradient(180deg, rgba(244, 239, 230, 0.55), rgba(244, 239, 230, 0.92) 70%);
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity calc(var(--1s) * 0.6) ease-in-out;

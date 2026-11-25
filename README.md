@@ -2,7 +2,11 @@
 
 MILA'S two-minute "Build your map" experience, built on The Pudding's open-source story engine from [the-pudding/ivf](https://github.com/the-pudding/ivf) (MIT). Forked 25 November 2026 by Atten Labs.
 
-What is The Pudding's: the engine (beats sheet, path markers, SVG viewBox camera, sprite along a path, scenery actions, reduced-motion handling). What is ours: every picture, the words, the branching, the ending. The Pudding's illustrations, fonts and logos were removed. The world, the figures and the props are built by script from two CC0 sources: Kenney's Sketch Town tiles (the town) and Open Peeps (the people), recoloured in MILA'S teal and cream. See `art-src/README.md` and the three scripts in `tools/`: `build-world.mjs` (terrain picture, path and markers), `build-sprites.mjs` (the mother's sprite sheet) and `build-foreground.mjs` (props at each stop). Change the route or the buildings in `build-world.mjs`, then run all three in that order.
+What is The Pudding's: the engine (beats sheet, path markers, SVG viewBox camera, sprite along a path, scenery actions, reduced-motion handling). What is ours: every picture, the words, the branching, the ending. The Pudding's illustrations, fonts and logos were removed. The map is a loop road, home to home, that appears piece by piece as she answers: each answer places one named thing (land, the clinic, the hospital, a room tag, the insurance office, the people at home) and the road extends to it. At the end the camera pulls back and the whole loop is her map.
+
+The world, the figures and the labels are built by script from two CC0 sources: Kenney's Sketch Town tiles (the town) and Open Peeps (the people), recoloured in MILA'S teal and cream. See `art-src/README.md` and the two scripts in `tools/`: `build-world.mjs` (land and building chunks as PNGs, labels and figures as vectors, the invisible path and markers, the list of scenery groups) and `build-sprites.mjs` (the mother's sprite sheet). Change the loop, the buildings or the labels in `build-world.mjs`, then run it.
+
+How a stop works: each answer leads to its own beat in `src/data/story.json` (for example `hosp-stp`, `hosp-other`, `hosp-undecided`). In `src/data/beats.csv` that beat first reveals the land chunk, then walks her to the stop while its place appears (`scenery` column = a group name in `world.svg`). Variants of one stop share scenery, and the engine keeps anything a previous beat placed.
 
 ## Run
 

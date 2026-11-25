@@ -3,7 +3,7 @@
 	import { prefersReducedMotion } from "svelte/motion";
 	import Ending from "$components/Ending.svelte";
 
-	let { visible, beat, beatI, atTheEnd, answers, choose } = $props();
+	let { visible, beat, beatI, atTheEnd, answers, route = [], choose } = $props();
 
 	const DELAY = 1600;
 	let paragraphs = $derived(beat?.text ?? []);
@@ -12,7 +12,7 @@
 
 <div class="html-wrapper" class:visible>
 	{#if atTheEnd}
-		<Ending {answers} />
+		<Ending {answers} {route} />
 	{:else}
 		{#key beatI}
 			<div class="copy">
@@ -52,7 +52,7 @@
 		display: flex;
 		align-items: flex-end;
 		justify-content: center;
-		padding: 0 1rem 5rem;
+		padding: 0 0.75rem 4.5rem;
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity calc(var(--1s) * 0.5) calc(var(--1s) * 1.2) ease-in-out;

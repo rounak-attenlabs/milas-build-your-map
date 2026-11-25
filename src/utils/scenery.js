@@ -1,20 +1,26 @@
-// Scenery props live in src/svg/world-foreground.svg as <g class="NAME">.
-// Every prop supports "enter" (fade in) and "reset" (hide). Add richer actions per prop if needed.
-const ids = ["doctor-pin", "hospital-pin", "price-tag", "policy-card", "family-heads", "end-needle"];
+// Scenery groups live in src/svg/world.svg as <g class="NAME"> (land chunks, places, figures, labels).
+// The list of names is written by tools/build-world.mjs. Every group supports "enter" and "reset".
+import ids from "$data/scenery-ids.json";
 
+const ease = "cubic-bezier(.2,.8,.2,1)";
 const basic = {
 	enter: (els) => {
-		els.forEach((el, i) => {
-			el.style.transition = `opacity calc(var(--1s) * 0.6) calc(var(--1s) * ${0.3 + i * 0.1}) ease-in-out, transform calc(var(--1s) * 0.6) calc(var(--1s) * ${0.3 + i * 0.1}) cubic-bezier(.2,.8,.2,1)`;
-			el.style.opacity = "1";
-			el.style.transform = "translateY(0)";
+		els.forEach((el) => {
+			const parts = el.querySelectorAll(":scope > *");
+			parts.forEach((p, i) => {
+				p.style.transition = `opacity calc(var(--1s) * 0.5) calc(var(--1s) * ${0.1 + i * 0.18}) ease-out, transform calc(var(--1s) * 0.7) calc(var(--1s) * ${0.1 + i * 0.18}) ${ease}`;
+				p.style.opacity = "1";
+				p.style.transform = "translateY(0)";
+			});
 		});
 	},
 	reset: (els) => {
 		els.forEach((el) => {
-			el.style.transition = "none";
-			el.style.opacity = "0";
-			el.style.transform = "translateY(-24px)";
+			el.querySelectorAll(":scope > *").forEach((p) => {
+				p.style.transition = "none";
+				p.style.opacity = "0";
+				p.style.transform = "translateY(-40px)";
+			});
 		});
 	}
 };

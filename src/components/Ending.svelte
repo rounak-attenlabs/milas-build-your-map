@@ -4,7 +4,8 @@
 	import story from "$data/story.json";
 	import nextStops from "$utils/nextStops.js";
 
-	let { answers } = $props();
+	let { answers, route = [] } = $props();
+	let places = $derived(route.map((id) => story.beats[id]?.place).filter((p, i, arr) => p && arr.indexOf(p) === i));
 	let stops = $derived(nextStops(answers));
 	let phone = $state("");
 	let consent = $state(false);
@@ -24,9 +25,10 @@
 	};
 </script>
 
-<div class="ending" in:fly={{ duration: prefersReducedMotion.current ? 0 : 400, delay: prefersReducedMotion.current ? 0 : 2200, y: 40 }}>
-	<p class="k">{story.ending.sub}</p>
+<div class="ending" in:fly={{ duration: prefersReducedMotion.current ? 0 : 400, delay: prefersReducedMotion.current ? 0 : 3600, y: 40 }}>
 	<h2>{story.ending.title}</h2>
+	<p class="places">{["Home", ...places].join(" → ")}</p>
+	<p class="k">{story.ending.sub}</p>
 	<ol>
 		{#each stops as stop}
 			<li>{stop}</li>
@@ -60,7 +62,19 @@
 		box-shadow: 0 24px 48px -28px rgba(5, 35, 34, 0.5);
 		display: flex;
 		flex-direction: column;
-		gap: 0.75rem;
+		gap: 0.6rem;
+		max-height: 50svh;
+		overflow: auto;
+	}
+	.places {
+		font-size: var(--14px);
+		line-height: 1.45;
+		color: var(--teal);
+	}
+	@media (min-width: 900px) {
+		.ending {
+			max-height: 88svh;
+		}
 	}
 	.k {
 		font-size: var(--12px);
@@ -72,7 +86,7 @@
 	h2 {
 		font-family: var(--serif);
 		font-weight: 500;
-		font-size: var(--28px);
+		font-size: var(--24px);
 		color: var(--teal);
 		line-height: 1.15;
 	}

@@ -54,7 +54,7 @@ await browser.close();
 
 const data = JSON.parse(fs.readFileSync(path.join(ROOT, "src/data/sprites.json"), "utf8"));
 const mom = data.find((d) => d.id === "mom");
-Object.assign(mom, { rows: Math.ceil(frames.length / COLS), cols: COLS, frameWidth: FW, frameHeight: FH, yOffset: +(BASE / FH).toFixed(3), scaleFactor: 0.6 });
+Object.assign(mom, { rows: Math.ceil(frames.length / COLS), cols: COLS, frameWidth: FW, frameHeight: FH, yOffset: +(BASE / FH).toFixed(3), scaleFactor: 0.7 });
 mom.frames = frames.map((f, i) => ({ index: i, x: (i % COLS) * FW, y: Math.floor(i / COLS) * FH, ...(f.cycle ? { cycle: f.cycle } : { pose: f.pose }) }));
 fs.writeFileSync(path.join(ROOT, "src/data/sprites.json"), JSON.stringify(data, null, 1) + "\n");
 console.log("sprites ok: scale", s.toFixed(4), "figure", Math.round(maxW * s), "x", Math.round(maxH * s));
