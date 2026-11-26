@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex"><title>Build your map: your map</title><meta name="description" content="The five stops you chose and three next steps, from MILA’S in Bengaluru.">
+<link rel="stylesheet" href="shared.css">
+<style>
+  h1 { margin: var(--s-6) 0 var(--s-2); }
+  .lead { margin-bottom: var(--s-5); }
+  /* the card: one step off the page, a hairline, no shadow */
+  .card { background: var(--g-alt); border: 1px solid var(--line); border-radius: var(--r-lg); padding: var(--s-5); }
+  .card-top { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: var(--s-4); border-bottom: 1px solid var(--line); }
+  .card h2 { font-family: var(--serif); font-weight: 400; font-size: 28px; line-height: 1.15; letter-spacing: -.01em; margin: var(--s-5) 0; }
+  .stops { list-style: none; position: relative; padding-left: 28px; }
+  .stops::before { content: ""; position: absolute; left: 7px; top: 10px; bottom: 14px; border-left: 1px solid var(--ink); }
+  .stops li { position: relative; padding-bottom: var(--s-4); }
+  .stops li::before { content: ""; position: absolute; left: -28px; top: 6px; width: 15px; height: 15px; border-radius: 50%; background: var(--g-alt); border: 1px solid var(--ink); }
+  .stops li.now::before { background: var(--action); border-color: var(--action); }
+  .stops .label { display: block; margin-bottom: 2px; }
+  .stops .v { font-weight: 500; }
+  .next { margin-top: var(--s-3); padding-top: var(--s-4); border-top: 1px solid var(--line); }
+  .next ol { padding-left: 20px; margin-top: var(--s-2); display: grid; gap: var(--s-2); }
+  .foot { margin-top: var(--s-5); display: flex; justify-content: space-between; }
+  /* the form, one recipe */
+  form { margin-top: var(--s-6); display: grid; gap: var(--s-4); }
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 14px; line-height: 20px; font-weight: 500; }
+  .field input { height: 48px; border-radius: var(--r-sm); border: 1px solid var(--ink); background: var(--g-alt); padding: 0 var(--s-4); font: 400 16px var(--sans); color: var(--ink); width: 100%; }
+  .consent { display: grid; grid-template-columns: 22px 1fr; gap: var(--s-3); align-items: start; }
+  .consent input { appearance: none; width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--ink); margin: 2px 0 0; position: relative; }
+  .consent input:checked { background: var(--ink); }
+  .consent input:checked::after { content: ""; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .status { color: var(--muted); font-size: 14px; line-height: 20px; }
+</style></head>
+<body><main class="phone">
+  <header class="top"><span class="wordmark">MILA’S</span><a class="link" href="#">Start again</a></header>
+
+  <h1>This is your map.</h1>
+  <p class="lead">Five stops in the order you chose, and the three things to do next.</p>
+
+  <section class="card" aria-label="Your map">
+    <div class="card-top"><span class="wordmark">MILA’S</span><span class="label">26 November 2026</span></div>
+    <h2>Your map to St. Philomena’s</h2>
+    <ol class="stops">
+      <li><span class="label">Start</span><span class="v">Home, 18 weeks pregnant</span></li>
+      <li><span class="label">Doctor</span><span class="v">Your own, seen regularly</span></li>
+      <li class="now"><span class="label">Hospital</span><span class="v">St. Philomena’s, J Ward, single AC room</span></li>
+      <li><span class="label">Insurance</span><span class="v">To check: room rent limit and waiting period</span></li>
+      <li><span class="label">With you</span><span class="v">Your partner</span></li>
+    </ol>
+    <div class="next"><span class="label">Three next stops</span>
+      <ol>
+        <li>Book the J Ward visit and ask what the ₹1,56,000 package leaves out.</li>
+        <li>Send us the policy. We find the room rent limit before admission.</li>
+        <li>Bring your partner to the next scan and the Meet Mila call.</li>
+      </ol>
+    </div>
+    <div class="foot"><span class="label">MILA’S, Bengaluru</span><span class="label">Made with your answers</span></div>
+  </section>
+
+  <form action="#" onsubmit="return false">
+    <div class="field"><label for="tel">Your WhatsApp number</label><input id="tel" type="tel" autocomplete="tel" inputmode="tel" value="98765 43210"></div>
+    <label class="consent"><input type="checkbox" checked><span>MILA’S can message me about my map. My answers are used for nothing else.</span></label>
+    <button class="btn btn--primary" type="submit">Send my map on WhatsApp</button>
+    <a class="btn btn--secondary" href="#">Save the card</a>
+    <p class="status">A message is not a booking. The team confirms one with you.</p>
+  </form>
+</main></body></html>
