@@ -1,29 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Nunito:wght@400;500&display=swap');
-/* One system, after tasteskill: near-black warm ink, two cream grounds, one accent used once a screen,
-   labels 13/500 in sentence case, text 16/26 in the ink, weights 400 and 500 only, one radius family (soft). */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Nunito:wght@400;500;600&display=swap');
+/* v3: MILA'S own ground (white), deep teal as the brand surface, coral once a screen. */
 :root {
-  --ink: #0f2a29; --muted: #5a6b6a; --g-main: #f4efe6; --g-alt: #fbf8f2; --line: rgba(15,42,41,.14);
-  --action: #dd725a; --on-action: #0f2a29;
-  --r-lg: 20px; --r-md: 12px; --r-sm: 8px; --r-btn: 12px;
+  --white: #ffffff; --tint: #eef4f3; --ink: #0f2a29; --muted: #5b6d6c;
+  --teal: #0d4e4d; --deep: #052322; --coral: #dd725a; --line: rgba(13,78,77,.16);
   --serif: 'Playfair Display', Georgia, serif; --sans: 'Nunito', system-ui, sans-serif;
-  --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px;
   --ease: cubic-bezier(.2,.8,.2,1);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { margin: 0; }
-body { background: var(--g-main); color: var(--ink); font: 400 16px/26px var(--sans); -webkit-font-smoothing: antialiased; }
-.phone { min-height: 100svh; max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; padding: 0 var(--s-5) calc(var(--s-5) + env(safe-area-inset-bottom)); }
-@media (min-width: 700px) { body { background: #ebe5da; } .phone { min-height: 0; height: 860px; margin: 40px auto; background: var(--g-main); border-radius: 36px; border: 1px solid var(--line); overflow: auto; } }
-.top { display: flex; align-items: center; justify-content: space-between; height: 56px; border-bottom: 1px solid var(--line); margin: 0 calc(-1 * var(--s-5)); padding: 0 var(--s-5); }
-.wordmark { font-family: var(--serif); font-size: 20px; color: var(--ink); letter-spacing: .01em; }
-.link { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 4px; transition: text-decoration-color .15s var(--ease); }
-.link:hover { text-decoration-color: var(--ink); }
-.label { font-size: 13px; line-height: 16px; font-weight: 500; color: var(--muted); }
-h1 { font-family: var(--serif); font-weight: 400; font-size: 38px; line-height: 1.12; letter-spacing: -.01em; color: var(--ink); max-width: 16ch; }
-.lead { font-size: 18px; line-height: 28px; color: var(--ink); max-width: 36ch; }
-.btn { display: flex; align-items: center; justify-content: center; height: 48px; padding: 0 var(--s-5); border-radius: var(--r-btn); font: 500 16px/1 var(--sans); text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: transform .15s var(--ease), background .15s var(--ease); }
+body { background: var(--white); color: var(--ink); font: 400 16px/26px var(--sans); -webkit-font-smoothing: antialiased; }
+.phone { min-height: 100svh; max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; padding: 0 24px calc(24px + env(safe-area-inset-bottom)); }
+@media (min-width: 700px) { body { background: #e6ecea; } .phone { min-height: 0; height: 860px; margin: 40px auto; background: var(--white); border-radius: 36px; overflow: auto; box-shadow: 0 40px 80px -40px rgba(5,35,34,.45); } }
+.top { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.wordmark { font-family: var(--serif); font-weight: 500; font-size: 20px; color: var(--teal); }
+.link { color: var(--teal); font-weight: 600; text-decoration: none; }
+.label { font-size: 13px; line-height: 16px; font-weight: 600; color: var(--muted); }
+h1 { font-family: var(--serif); font-weight: 400; font-size: 38px; line-height: 1.1; letter-spacing: -.01em; color: var(--deep); }
+.lead { font-size: 17px; line-height: 27px; color: var(--ink); max-width: 34ch; }
+.btn { display: flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 24px; border-radius: 999px; font: 600 17px/1 var(--sans); text-decoration: none; cursor: pointer; border: 1.5px solid transparent; transition: transform .15s var(--ease), background .15s var(--ease); }
 .btn:hover { transform: translateY(-1px); }
 .btn:active { transform: translateY(1px) scale(.985); }
-.btn--primary { background: var(--action); color: var(--on-action); }
-.btn--secondary { background: var(--g-alt); color: var(--ink); border-color: var(--ink); }
-:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+.btn--teal { background: var(--teal); color: #fff; }
+.btn--coral { background: var(--coral); color: var(--deep); }
+.btn--line { background: #fff; color: var(--teal); border-color: var(--teal); }
+:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }

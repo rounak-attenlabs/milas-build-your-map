@@ -1,45 +1,45 @@
 <!doctype html>
 <html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex"><title>Build your map: where the baby arrives</title><meta name="description" content="Stop three of five in MILA’S two-minute map for parents in Bengaluru.">
-<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="shared.css?v=3">
 <style>
-  .progress { display: flex; align-items: center; justify-content: space-between; margin: var(--s-5) 0 var(--s-2); }
-  .route { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-  .route span { height: 2px; background: var(--line); }
-  .route span.done { background: var(--ink); }
-  h1 { margin: var(--s-7) 0 var(--s-4); }
-  .lead { margin-bottom: var(--s-6); }
-  /* answers as rows: one rule closes each row, a radio in the ink, 16px text */
-  .rows { list-style: none; border-top: 1px solid var(--line); }
-  .rows li { border-bottom: 1px solid var(--line); }
-  .rows label { display: grid; grid-template-columns: 1fr 24px; gap: var(--s-4); align-items: center; padding: var(--s-4) 0; cursor: pointer; min-height: 56px; }
-  .rows .t { font-weight: 500; }
-  .rows .d { color: var(--ink); }
-  .rows input { appearance: none; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--ink); margin: 0; position: relative; }
-  .rows input:checked::after { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: var(--ink); }
-  .why { margin-top: var(--s-5); color: var(--ink); }
-  .spacer { flex: 1; min-height: var(--s-6); }
-  .actions { display: grid; gap: var(--s-3); padding-top: var(--s-4); border-top: 1px solid var(--line); }
+  .progress { display: flex; justify-content: space-between; margin: 20px 0 8px; }
+  .route { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+  .route span { height: 3px; border-radius: 3px; background: var(--tint); position: relative; }
+  .route span.done { background: var(--teal); }
+  .route span.now { background: linear-gradient(90deg, var(--teal) 0 55%, var(--tint) 55%); }
+  .route span.now::after { content: ""; position: absolute; left: 55%; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--coral); transform: translate(-50%, -50%); box-shadow: 0 0 0 3px #fff; }
+  h1 { margin: 44px 0 14px; }
+  .answers { display: grid; gap: 10px; margin-top: 30px; }
+  .answer { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 64px; padding: 14px 18px 14px 20px; border-radius: 18px; background: #fff; border: 1.5px solid var(--line); color: var(--deep); text-decoration: none; }
+  .answer .t { font-weight: 600; font-size: 17px; line-height: 24px; }
+  .answer .d { display: block; font-size: 15px; line-height: 22px; color: var(--muted); margin-top: 2px; }
+  .answer .dot { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--line); flex: none; }
+  .answer.selected { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .answer.selected .d { color: rgba(255,255,255,.78); }
+  .answer.selected .dot { border-color: #fff; background: radial-gradient(circle, #fff 0 45%, transparent 48%); }
+  .why { margin-top: 22px; color: var(--ink); }
+  .spacer { flex: 1; min-height: 28px; }
+  .actions { display: grid; gap: 14px; padding-bottom: 4px; }
   .actions .meta { display: flex; justify-content: space-between; align-items: center; }
 </style></head>
 <body><main class="phone">
   <header class="top"><span class="wordmark">MILA’S</span><a class="link" href="#">Save and exit</a></header>
-
   <div class="progress"><span class="label">Stop 3 of 5</span><span class="label">Hospital</span></div>
-  <div class="route" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="done"></span><span></span><span></span></div>
+  <div class="route" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="now"></span><span></span><span></span></div>
 
   <h1>Where will the baby arrive?</h1>
   <p class="lead">Your doctor makes the medical decisions. We take care of the paperwork, the costs and the questions around them.</p>
 
-  <ul class="rows" role="radiogroup" aria-label="Hospital">
-    <li><label><span><span class="t">St. Philomena’s</span><br><span class="d">J Ward delivery package, ₹1,56,000 all in</span></span><input type="radio" name="h" checked></label></li>
-    <li><label><span><span class="t">Another hospital</span><br><span class="d">We read their estimate with you</span></span><input type="radio" name="h"></label></li>
-    <li><label><span class="t">Not decided yet</span><input type="radio" name="h"></label></li>
-  </ul>
+  <div class="answers">
+    <a class="answer selected" href="#"><span><span class="t">St. Philomena’s</span><span class="d">J Ward delivery package, ₹1,56,000 all in</span></span><span class="dot"></span></a>
+    <a class="answer" href="#"><span><span class="t">Another hospital</span><span class="d">We read their estimate with you</span></span><span class="dot"></span></a>
+    <a class="answer" href="#"><span class="t">Not decided yet</span><span class="dot"></span></a>
+  </div>
   <p class="why">The hospital sets the bill, so this answer shapes the next two.</p>
 
   <div class="spacer"></div>
   <div class="actions">
-    <a class="btn btn--primary" href="#">Next: your room</a>
-    <div class="meta"><a class="link" href="#">Back</a><span class="label">About a minute left</span></div>
+    <a class="btn btn--teal" href="#">Next: your room</a>
+    <div class="meta"><a class="link" href="#">‹ Back</a><span class="label">About a minute left</span></div>
   </div>
 </main></body></html>
