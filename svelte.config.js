@@ -14,6 +14,8 @@ const config = {
 	},
 	preprocess,
 	kit: {
+		// BASE_PATH lets the same build live under a sub-path (GitHub Pages) or at a root (Vercel)
+		paths: { base: process.env.BASE_PATH || "" },
 		adapter: adapterStatic({ strict: false })
 	}
 };

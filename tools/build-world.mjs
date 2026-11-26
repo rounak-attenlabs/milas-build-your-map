@@ -137,7 +137,7 @@ const pill = (x, y, text, { size = 30, fill = CREAM, color = TEAL, tail = true }
 		`<text x="${x}" y="${y - h / 2 + size * 0.36}" text-anchor="middle" ${FONT} font-size="${size}" fill="${color}">${esc(text)}</text></g>`;
 };
 const figure = (x, y, height, opts) => { const s = height / 2980; return `<g class="figure"><g transform="translate(${x - 425 * s} ${y - 2980 * s}) scale(${s})">${peep(opts)}</g></g>`; };
-const img = (name) => { const b = boxes[name]; return `<image href="/assets/world/${name}.png" x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}"/>`; };
+const img = (name) => { const b = boxes[name]; return `<image href="assets/world/${name}.png" x="${b.x}" y="${b.y}" width="${b.w}" height="${b.h}"/>`; };
 const top = (cc, rr, levels = 1, roof = 0) => { const p = xy(cc, rr); return { x: p.x, y: p.y - STACK * levels - roof }; };
 const docColours = { ...brand, extra: { "#8FA7DF": "#9fc6c3", "#9FD8E5": CORAL, "#FFFFFF": "#ffffff" } };
 
