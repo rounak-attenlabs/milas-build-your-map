@@ -1,10 +1,11 @@
 <script>
+	import { base } from "$app/paths";
 	import { projectState } from "$runes/misc.svelte.js";
 </script>
 
 <header class:started={projectState.started}>
-	<a class="wordmark" href="/" aria-label="MILA’S home">MILA’S</a>
-	<a class="close" href="/" aria-label="Leave Build your map">×</a>
+	<a class="wordmark" href={base || "/"} aria-label="MILA’S home">MILA’S</a>
+	<a class="close" href={base || "/"} aria-label="Leave Build your map">×</a>
 </header>
 
 <style>
